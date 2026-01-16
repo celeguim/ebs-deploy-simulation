@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo
+    ports:
+      - "5432:5432"
+
+  flyway:
+    image: flyway/flyway:10
+    command: -connectRetries=60 migrate
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/demo
+      FLYWAY_USER: demo
+      FLYWAY_PASSWORD: demo
+      FLYWAY_LOCATIONS: filesystem:/flyway/sql
+    volumes:
+      - ./flyway/sql:/flyway/sql
+    depends_on:
+      - postgres
+
+  airflow:
+    build: ./airflow
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./jenkins:/var/jenkins_home/workspace

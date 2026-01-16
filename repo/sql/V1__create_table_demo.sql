@@ -1,0 +1,4 @@
+CREATE TABLE xx_demo (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100)
+);
