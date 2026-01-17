@@ -2,6 +2,7 @@ services:
 
   postgres:
     image: postgres:16
+    container_name: postgres
     environment:
       POSTGRES_USER: demo
       POSTGRES_PASSWORD: demo
@@ -9,36 +10,50 @@ services:
     ports:
       - "5432:5432"
 
-  flyway:
-    image: flyway/flyway:10
-    command: -connectRetries=60 migrate
-    environment:
-      FLYWAY_URL: jdbc:postgresql://postgres:5432/demo
-      FLYWAY_USER: demo
-      FLYWAY_PASSWORD: demo
-      FLYWAY_LOCATIONS: filesystem:/flyway/sql
-    volumes:
-      - ./flyway/sql:/flyway/sql
+  airflow-init:
+    build: ./airflow
+    container_name: airflow-init
     depends_on:
       - postgres
-
-  airflow:
-    image: apache/airflow:2.9.1
-    container_name: airflow
     environment:
-      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://demo:demo@postgres:5432/demo
+    command: >
+      bash -c "airflow db migrate &&
+               airflow users create -u admin -p admin -f Admin -l User -r Admin -e admin@example.com; "
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
+      - ./flyway/sql:/opt/airflow/flyway/sql
+
+  airflow:
+    build: ./airflow
+    container_name: airflow
+    depends_on:
+      - airflow-init
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://demo:demo@postgres:5432/demo
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./flyway/sql:/opt/airflow/flyway/sql
+
     ports:
       - "8080:8080"
     command: webserver
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    ports:
-      - "8081:8080"
+  airflow-scheduler:
+    build: ./airflow
+    container_name: airflow-scheduler
+    depends_on:
+      - airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://demo:demo@postgres:5432/demo
     volumes:
-      - ./jenkins:/var/jenkins_home/workspace
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./flyway/sql:/opt/airflow/flyway/sql
+    command: scheduler
