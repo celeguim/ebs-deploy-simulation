@@ -39,10 +39,10 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./flyway/sql:/opt/airflow/flyway/sql
-
     ports:
       - "8080:8080"
     command: webserver
+#    command: api-server
 
   airflow-scheduler:
     build: ./airflow
@@ -57,3 +57,16 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./flyway/sql:/opt/airflow/flyway/sql
     command: scheduler
+
+#  flyway:
+#    image: flyway/flyway:10
+#    command: -connectRetries=60 -baselineOnMigrate=true migrate
+#    environment:
+#      FLYWAY_URL: jdbc:postgresql://postgres:5432/demo
+#      FLYWAY_USER: demo
+#      FLYWAY_PASSWORD: demo
+#      FLYWAY_LOCATIONS: filesystem:/flyway/sql
+#    volumes:
+#      - ./flyway/sql:/flyway/sql
+#    depends_on:
+#      - postgres

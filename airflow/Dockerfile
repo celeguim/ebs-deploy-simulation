@@ -1,8 +1,9 @@
 FROM apache/airflow:2.9.1
+#FROM apache/airflow:3.1.6
 
 USER root
 
-ARG FLYWAY_VERSION=10.10.0
+ARG FLYWAY_VERSION=11.8.0
 
 RUN curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${FLYWAY_VERSION}/flyway-commandline-${FLYWAY_VERSION}-linux-x64.tar.gz \
     | tar zx -C /opt && \
