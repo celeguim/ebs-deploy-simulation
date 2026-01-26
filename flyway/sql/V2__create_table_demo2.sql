@@ -1,4 +1,4 @@
-CREATE TABLE xx_demo (
+CREATE TABLE xx_demo2 (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100)
 );
