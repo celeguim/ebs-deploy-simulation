@@ -2,6 +2,8 @@
 
 ## db initialization
 docker exec -it airflow airflow db migrate
+docker exec -it airflow flyway -X migrate   -baselineOnMigrate=true   -url=jdbc:mysql://mysql:3306/demo   -user=demo   -password=demo   -locations=filesystem:/opt/airflow/flyway/sql
+docker exec -it airflow flyway -X repair -url=jdbc:mysql://mysql:3306/demo   -user=demo   -password=demo  
 
 ## create user admin
 docker exec -it airflow airflow users create \
@@ -19,8 +21,9 @@ docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 docker exec -it airflow ls -l /opt/airflow/dags
 docker exec -it airflow airflow dags list-import-errors
 
-docker compose up -d postgres
+docker compose up -d mysql
 docker compose up -d airflow-init
+docker logs airflow-init --follow
 docker compose up -d airflow
 docker compose up -d airflow-scheduler
 docker compose ps

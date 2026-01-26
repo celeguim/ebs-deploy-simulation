@@ -22,7 +22,7 @@ with DAG(
     # )
 
     # DEBUG
-    run_flyway = BashOperator(
+    run_flyway_debug = BashOperator(
         task_id="run_flyway_debug",
         bash_command="""
         set -euxo pipefail
