@@ -1,0 +1,20 @@
+FROM ubuntu:24.04
+
+# 1. Install libaio1t64 and other helpers
+RUN apt-get update && apt-get install -y \
+    libaio1t64 \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Create the symlink (Crucial for Oracle Client to find the library)
+RUN ln -s /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
+
+# 3. Download and Install Instant Client (using the direct link)
+RUN mkdir -p /opt/oracle && cd /opt/oracle && \
+    wget --no-check-certificate https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip && \
+    unzip instantclient-basiclite-linuxx64.zip && \
+    rm -f *.zip
+
+# 4. Configure Library Path
+RUN echo /opt/oracle/instantclient_* > /etc/ld.so.conf.d/oracle-instantclient.conf && ldconfig

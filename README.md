@@ -21,11 +21,22 @@ docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 docker exec -it airflow ls -l /opt/airflow/dags
 docker exec -it airflow airflow dags list-import-errors
 
-docker compose up -d mysql
-docker compose up -d airflow-init
-docker logs airflow-init --follow
-docker compose up -d airflow
-docker compose up -d airflow-scheduler
+```
+sudo docker compose up -d mysql
+sudo docker compose up -d airflow-init
+sudo docker logs airflow-init --follow
+sudo docker compose up -d airflow
+sudo docker logs airflow --follow
+sudo docker compose up -d airflow-scheduler
 docker compose ps
 docker compose down -v
 docker compose build
+```
+
+docker tls issue with ca certs
+CTRL+R certlm.msc
+export base 64 cer (dnv root + zscaler)
+sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+sudo cp /mnt/c/Users/cellui/Documents/Zscaler.cer /usr/local/share/ca-certificates/Zscaler.crt
+sudo cp /mnt/c/Users/cellui/Documents/DNVRootCA.cer /usr/local/share/ca-certificates/DNVRootCA.crt
+curl -I https://www.google.com
