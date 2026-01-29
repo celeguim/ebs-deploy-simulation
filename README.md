@@ -22,8 +22,11 @@ docker exec -it airflow ls -l /opt/airflow/dags
 docker exec -it airflow airflow dags list-import-errors
 
  ```
+ docker compose build --progress=plain --no-cache > build_oracle.log 2>&1
+ docker compose build --progress=plain 2>&1 | tee build_oracle.log
+
 sudo docker compose up -d mysql
-sudo docker compose up -d airflow-init
+sudo docker compose up airflow-init
 sudo docker logs airflow-init --follow
 sudo docker compose up -d airflow
 sudo docker logs airflow --follow
@@ -32,6 +35,9 @@ sudo docker compose ps
 sudo docker compose down -v
 sudo docker compose build
 ```
+
+$ docker run --rm --name oracle-db -p 1521:1521 -e ORACLE_PASSWORD=yourStrongPassword gvenzl/oracle-xe
+
 
 docker tls issue with ca certs
 CTRL+R certlm.msc

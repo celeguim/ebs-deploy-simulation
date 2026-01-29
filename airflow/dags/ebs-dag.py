@@ -5,17 +5,18 @@ import pandas as pd
 
 
 @dag(
-    dag_id="oracle_ebs_thick_load_example",
+    dag_id="ebs_thick_deploy",
     schedule=None,
     start_date=datetime(2026, 1, 1),
     catchup=False,
 )
+
 def extract_from_ebs_and_load():
     @task()
     def jdbc_extract():
         try:
             # The hook automatically uses thick_mode=True if configured in the connection 'Extra'
-            hook = OracleHook(oracle_conn_id="my_oracle_ebs_conn")
+            hook = OracleHook(oracle_conn_id="oracle_ebs_conn")
 
             # Example SQL query to extract data from an EBS table (replace with actual query)
             sql = "SELECT * FROM APPS.FND_USER WHERE END_DATE IS NULL"
