@@ -48,6 +48,7 @@ services:
 #      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://demo:demo@postgres:5432/demo
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://demo:demo@mysql:3306/demo
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      LD_LIBRARY_PATH: /opt/oracle/instantclient_19_21
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs

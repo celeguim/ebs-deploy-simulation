@@ -6,7 +6,7 @@ import pandas as pd
 
 @dag(
     dag_id="oracle_ebs_thick_load_example",
-    schedule_interval=None,
+    schedule=None,
     start_date=datetime(2026, 1, 1),
     catchup=False,
 )
