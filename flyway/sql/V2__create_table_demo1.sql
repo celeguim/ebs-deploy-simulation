@@ -1,4 +1,0 @@
-CREATE TABLE xx_demo1 (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100)
-);
