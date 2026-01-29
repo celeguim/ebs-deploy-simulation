@@ -1,15 +1,5 @@
 services:
 
-#  postgres:
-#    image: postgres:16
-#    container_name: postgres
-#    environment:
-#      POSTGRES_USER: demo
-#      POSTGRES_PASSWORD: demo
-#      POSTGRES_DB: demo
-#    ports:
-#      - "5432:5432"
-
   mysql:
     image: mysql:8.1
     container_name: airflow-mysql
@@ -21,6 +11,14 @@ services:
     ports:
       - "3306:3306"
 
+  oracle:
+    image: gvenzl/oracle-xe
+    container_name: airflow-oracle
+    environment:
+      ORACLE_PASSWORD: yourStrongPassword
+    ports:
+      - "1521:1521"
+
   airflow-init:
     build: ./airflow
     container_name: airflow-init
@@ -28,7 +26,6 @@ services:
       - mysql
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-#      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://demo:demo@postgres:5432/demo
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://demo:demo@mysql:3306/demo
     command: >
       bash -c "airflow db migrate &&
@@ -45,7 +42,8 @@ services:
       - airflow-init
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-#      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://demo:demo@postgres:5432/demo
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+      AIRFLOW__CORE__TEST_CONNECTION: "enabled"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://demo:demo@mysql:3306/demo
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       LD_LIBRARY_PATH: /opt/oracle/instantclient_19_21
@@ -56,7 +54,6 @@ services:
     ports:
       - "8080:8080"
     command: webserver
-#    command: api-server
 
   airflow-scheduler:
     build: ./airflow
@@ -65,23 +62,9 @@ services:
       - airflow
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-#      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://demo:demo@postgres:5432/demo
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://demo:demo@mysql:3306/demo
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./flyway/sql:/opt/airflow/flyway/sql
     command: scheduler
-
-#  flyway:
-#    image: flyway/flyway:10
-#    command: -connectRetries=60 -baselineOnMigrate=true migrate
-#    environment:
-#      FLYWAY_URL: jdbc:postgresql://postgres:5432/demo
-#      FLYWAY_USER: demo
-#      FLYWAY_PASSWORD: demo
-#      FLYWAY_LOCATIONS: filesystem:/flyway/sql
-#    volumes:
-#      - ./flyway/sql:/flyway/sql
-#    depends_on:
-#      - postgres

@@ -22,8 +22,8 @@ docker exec -it airflow ls -l /opt/airflow/dags
 docker exec -it airflow airflow dags list-import-errors
 
  ```
- docker compose build --progress=plain --no-cache > build_oracle.log 2>&1
- docker compose build --progress=plain 2>&1 | tee build_oracle.log
+docker compose build --progress=plain --no-cache > build_oracle.log 2>&1
+docker compose build --progress=plain 2>&1 | tee build_oracle.log
 
 sudo docker compose up -d mysql
 sudo docker compose up airflow-init
@@ -38,6 +38,14 @@ sudo docker compose build
 
 $ docker run --rm --name oracle-db -p 1521:1521 -e ORACLE_PASSWORD=yourStrongPassword gvenzl/oracle-xe
 
+# criar connection no airflow
+tipo: oracle
+extra:
+{
+  "thick_mode": true,
+  "thick_mode_lib_dir": "/opt/oracle/instantclient_21_1",
+  "service_name": "NOME_DO_SEU_SERVICO_EBS"
+}
 
 docker tls issue with ca certs
 CTRL+R certlm.msc

@@ -19,7 +19,7 @@ def extract_from_ebs_and_load():
             hook = OracleHook(oracle_conn_id="oracle_ebs_conn")
 
             # Example SQL query to extract data from an EBS table (replace with actual query)
-            sql = "SELECT * FROM APPS.FND_USER WHERE END_DATE IS NULL"
+            sql = "SELECT to_char(SYSDATE, 'yyyy-MM-dd HH:MI:SS') FROM dual"
 
             df = hook.get_pandas_df(sql)
             print(f"Extracted {len(df)} records.")

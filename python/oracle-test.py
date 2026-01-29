@@ -1,6 +1,7 @@
 # Enable Thick Mode
 # On Linux, do NOT pass lib_dir; it uses the system path (ldconfig) set in Docker
 import os
+import oracledb
 
 try:
     oracledb.init_oracle_client()
