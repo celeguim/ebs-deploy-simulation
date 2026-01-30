@@ -14,8 +14,9 @@ try:
             sql = "SELECT to_char(SYSDATE, 'yyyy-MM-dd HH:MI:SS') FROM DUAL"
             for row in cursor.execute(sql):
                 print(row)
-            cursor.execute("create user celeghin identified by celeghin")
+            #cursor.execute("create user celeghin identified by celeghin")
             cursor.execute("grant connect, resource to celeghin")
+            cursor.execute("ALTER USER celeghin QUOTA 100M ON USERS")
             print("User celeghin created successfully")
 except oracledb.Error as e:
     print(f"Connection failed: {e}")

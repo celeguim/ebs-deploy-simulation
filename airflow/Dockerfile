@@ -51,6 +51,8 @@ ENV ORACLE_HOME="/opt/oracle/instantclient_23_26"
 
 USER airflow
 WORKDIR /home/airflow
+RUN mkdir -p /opt/airflow/flyway/sql-dev
+RUN mkdir -p /opt/airflow/flyway/sql-prd
 
 # flyway dependencies
 WORKDIR /opt/flyway-${FLYWAY_VERSION}

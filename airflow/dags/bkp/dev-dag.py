@@ -9,9 +9,21 @@ with DAG(
         schedule=None,
         catchup=False,
 ) as dag:
+    # run_flyway = BashOperator(
+    #     task_id="run_flyway",
+    #     bash_command="""
+    #     flyway migrate \
+    #       -baselineOnMigrate=true \
+    #       -url=jdbc:mysql://mysql:3306/demo \
+    #       -user=demo \
+    #       -password=demo \
+    #       -locations=filesystem:/opt/airflow/flyway/sql
+    #     """
+    # )
+
     # DEBUG
     run_flyway_debug = BashOperator(
-        task_id="run_flyway_dev",
+        task_id="run_flyway_debug",
         bash_command="""
         set -euxo pipefail
 
