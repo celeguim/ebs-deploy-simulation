@@ -36,12 +36,14 @@ services:
       - ./flyway/sql:/opt/airflow/flyway/sql
 
   airflow-init:
-    build: ./airflow
+#    build: ./airflow
+    build: .
     container_name: airflow-init
     depends_on:
       - oracle
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-oracle python-oracledb"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: oracle://system:yourStrongPassword@oracle:1521/XE
     command: >
       bash -c "airflow db migrate &&
@@ -50,6 +52,7 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
       - ./flyway/sql:/opt/airflow/flyway/sql
+      - ./plugins:/opt/airflow/plugins
 
   airflow:
     build: ./airflow
