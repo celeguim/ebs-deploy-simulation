@@ -1,9 +1,4 @@
 import oracledb
-import getpass
-
-# user = "APPS"
-# password = getpass.getpass()
-# dsn = "ocifra2600-umjv1-scan.findbpriad2.financevcn.oraclevcn.com:1521/DEV"
 
 user = "system"
 password = "yourStrongPassword"
@@ -19,7 +14,8 @@ try:
             sql = "SELECT to_char(SYSDATE, 'yyyy-MM-dd HH:MI:SS') FROM DUAL"
             for row in cursor.execute(sql):
                 print(row)
-            # cursor.execute("create user celeghin identified by celeghin")
+            cursor.execute("create user celeghin identified by celeghin")
             cursor.execute("grant connect, resource to celeghin")
+            print("User celeghin created successfully")
 except oracledb.Error as e:
     print(f"Connection failed: {e}")

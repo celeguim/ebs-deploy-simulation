@@ -1,8 +1,7 @@
 from airflow.decorators import dag, task
 from airflow.providers.oracle.hooks.oracle import OracleHook
 from datetime import datetime
-import pandas as pd
-
+# import pandas as pd
 
 @dag(
     dag_id="ebs_thick_deploy",
@@ -33,6 +32,5 @@ def extract_from_ebs_and_load():
             raise
 
     extract_task = jdbc_extract()
-
 
 extract_from_ebs_and_load()

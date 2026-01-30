@@ -30,6 +30,7 @@ docker compose build --progress=plain 2>&1 | tee build_oracle.log
 
 sudo docker compose up -d mysql
 sudo docker compose up -d oracle
+sudo docker logs airflow-oracle --follow
 sudo docker compose up airflow-init
 sudo docker logs airflow-init --follow
 sudo docker compose up -d airflow
@@ -43,14 +44,19 @@ sudo docker compose build
 $ docker run --rm --name oracle-db -p 1521:1521 -e ORACLE_PASSWORD=yourStrongPassword gvenzl/oracle-xe
 
 # criar connection no airflow
+id: oracle_ebs_conn
 tipo: oracle
+host: 172.30.71.145 (docker)
+schema/login: celeghin
+pwd: celeghin
 extra:
 {
   "thick_mode": true,
-  "thick_mode_lib_dir": "/opt/oracle/instantclient_21_1",
-  "service_name": "NOME_DO_SEU_SERVICO_EBS"
+  "thick_mode_lib_dir": "/opt/oracle/instantclient_23_26",
+  "service_name": "XE"
 }
 
+# issues
 docker tls issue with ca certs
 CTRL+R certlm.msc
 export base 64 cer (dnv root + zscaler)
@@ -58,3 +64,5 @@ sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
 sudo cp /mnt/c/Users/cellui/Documents/Zscaler.cer /usr/local/share/ca-certificates/Zscaler.crt
 sudo cp /mnt/c/Users/cellui/Documents/DNVRootCA.cer /usr/local/share/ca-certificates/DNVRootCA.crt
 curl -I https://www.google.com
+
+

@@ -19,7 +19,7 @@ services:
     ports:
       - "1521:1521"
 
-  airflow-init-mysql:
+  airflow-init:
     build: ./airflow
     container_name: airflow-init
     depends_on:
@@ -35,15 +35,14 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./flyway/sql:/opt/airflow/flyway/sql
 
-  airflow-init:
-#    build: ./airflow
-    build: .
+  airflow-init-oracle:
+    build: ./airflow
     container_name: airflow-init
     depends_on:
       - oracle
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-      _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-oracle python-oracledb"
+      _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-oracle oracledb"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: oracle://system:yourStrongPassword@oracle:1521/XE
     command: >
       bash -c "airflow db migrate &&

@@ -1,11 +1,12 @@
+# from airflow.operators.bash import BashOperator
+from airflow.providers.standard.operators.bash import BashOperator
 from airflow import DAG
-from airflow.operators.bash import BashOperator
 from datetime import datetime
 
 with DAG(
         dag_id="mysql_deploy",
         start_date=datetime(2024, 1, 1),
-        schedule_interval=None,
+        schedule=None,
         catchup=False,
 ) as dag:
     # run_flyway = BashOperator(
