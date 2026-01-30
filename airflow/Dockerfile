@@ -36,6 +36,8 @@ COPY constraints-3.12.txt /tmp/constraints.txt
 RUN python3 -m pip install --no-cache-dir \
     apache-airflow-providers-oracle oracledb pandas \
     --constraint /tmp/constraints.txt
+RUN pip show oracledb
+RUN pip show apache-airflow-providers-oracle
 RUN whoami
 RUN pwd
 RUN ls -lta

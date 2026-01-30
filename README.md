@@ -21,11 +21,15 @@ docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 docker exec -it airflow ls -l /opt/airflow/dags
 docker exec -it airflow airflow dags list-import-errors
 
+wget --no-check-certificate https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip
+wget --no-check-certificate https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/11.8.0/flyway-commandline-11.8.0-linux-x64.tar.gz
+
  ```
 docker compose build --progress=plain --no-cache > build_oracle.log 2>&1
 docker compose build --progress=plain 2>&1 | tee build_oracle.log
 
 sudo docker compose up -d mysql
+sudo docker compose up -d oracle
 sudo docker compose up airflow-init
 sudo docker logs airflow-init --follow
 sudo docker compose up -d airflow

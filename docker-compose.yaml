@@ -19,7 +19,7 @@ services:
     ports:
       - "1521:1521"
 
-  airflow-init:
+  airflow-init-mysql:
     build: ./airflow
     container_name: airflow-init
     depends_on:
@@ -27,6 +27,22 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://demo:demo@mysql:3306/demo
+    command: >
+      bash -c "airflow db migrate &&
+               airflow users create -u admin -p admin -f Admin -l User -r Admin -e admin@example.com; "
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./flyway/sql:/opt/airflow/flyway/sql
+
+  airflow-init:
+    build: ./airflow
+    container_name: airflow-init
+    depends_on:
+      - oracle
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: oracle://system:yourStrongPassword@oracle:1521/XE
     command: >
       bash -c "airflow db migrate &&
                airflow users create -u admin -p admin -f Admin -l User -r Admin -e admin@example.com; "
