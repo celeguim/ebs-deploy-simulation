@@ -40,3 +40,53 @@ sudo bash -c 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
 sudo cp /mnt/c/Users/cellui/Documents/Zscaler.cer /usr/local/share/ca-certificates/Zscaler.crt
 sudo cp /mnt/c/Users/cellui/Documents/DNVRootCA.cer /usr/local/share/ca-certificates/DNVRootCA.crt
 curl -I https://www.google.com
+
+# Context
+flowchart LR
+    Dev[Developer] --> GitHub
+    GitHub --> Airflow
+    Airflow --> BMC[BMC Ticket Validation]
+    Airflow --> EBS[Oracle EBS Environment]
+    Airflow --> Audit[(Versioned Logs / Audit)]
+
+
+# Components
+flowchart LR
+    Scheduler[Airflow DAG Trigger] --> Validator
+
+    Validator[BMC Ticket Validator] --> Planner
+    Planner[Deployment Planner] --> Executor
+    Executor[EBS Deployment Executor] --> Logger
+
+    Logger[Audit Logger] --> Versioning[(Git Versioning)]
+
+
+# Containers
+flowchart TB
+    subgraph CI_CD
+        GitHub[GitHub Repository]
+        Airflow[Apache Airflow Scheduler]
+    end
+
+    subgraph Deploy_Engine
+        PythonDeploy[Python Deployment Engine]
+        AuditLogs[(Audit & Version History)]
+    end
+
+    subgraph Governance
+        BMC[BMC Ticket System]
+    end
+
+    subgraph Targets
+        EBS_DEV[Oracle EBS - DEV]
+        EBS_UAT[Oracle EBS - UAT]
+        EBS_PROD[Oracle EBS - PROD]
+    end
+
+    GitHub --> Airflow
+    Airflow --> PythonDeploy
+    PythonDeploy --> BMC
+    PythonDeploy --> EBS_DEV
+    PythonDeploy --> EBS_UAT
+    PythonDeploy --> EBS_PROD
+    PythonDeploy --> AuditLogs
