@@ -1,0 +1,27 @@
+###############################
+# Build Stage
+FROM apache/airflow:2.9.1
+USER root
+ARG FLYWAY_VERSION=11.8.0
+
+# oracle thick client dependencies
+RUN apt-get update && apt-get install -y libaio1 wget unzip && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /opt/oracle && cd /opt/oracle && \
+    wget --no-check-certificate https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip && \
+    unzip instantclient-basiclite-linuxx64.zip && \
+    rm -f instantclient-basiclite-linuxx64.zip
+RUN echo /opt/oracle/instantclient_* > /etc/ld.so.conf.d/oracle-instantclient.conf && ldconfig
+ENV LD_LIBRARY_PATH="/opt/oracle/instantclient_19_21"
+ENV ORACLE_HOME="/opt/oracle/instantclient_19_21"
+USER airflow
+# RUN python3 -m pip install --upgrade pip && \
+RUN python3 -m pip install apache-airflow-providers-oracle
+
+# flyway dependencies
+RUN curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${FLYWAY_VERSION}/flyway-commandline-${FLYWAY_VERSION}-linux-x64.tar.gz \
+    | tar zx -C /opt && \
+    chmod +x /opt/flyway-${FLYWAY_VERSION}/flyway && \
+    ln -sf /opt/flyway-${FLYWAY_VERSION}/flyway /usr/local/bin/flyway && \
+    chown airflow /opt/flyway-${FLYWAY_VERSION}/flyway
+
+USER airflow
