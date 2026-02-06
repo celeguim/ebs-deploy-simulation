@@ -1,5 +1,13 @@
 # ebs-deploy-simulation
 
+## mysql .env : example
+MYSQL_HOST=mysql
+MYSQL_PORT=3306
+MYSQL_DATABASE=demo
+MYSQL_USER=demo
+MYSQL_PASSWORD=demo
+MYSQL_ROOT_PASSWORD=root
+
 ## db initialization
 docker exec -it airflow airflow db migrate
 docker exec -it airflow flyway -X migrate   -baselineOnMigrate=true   -url=jdbc:mysql://mysql:3306/demo   -user=demo   -password=demo   -locations=filesystem:/opt/airflow/flyway/sql
