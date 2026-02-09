@@ -1,0 +1,2 @@
+-- Baseline marker
+-- Schema already exists

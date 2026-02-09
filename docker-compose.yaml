@@ -1,0 +1,88 @@
+services:
+
+  mysql:
+    image: mysql:8.1
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+
+  airflow-init:
+    build: ./airflow
+    container_name: airflow-init
+    platform: linux/amd64
+    depends_on:
+      - mysql
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}
+    command: >
+      bash -c "airflow db migrate &&
+               airflow users create -u admin -p admin -f Admin -l User -r Admin -e admin@example.com; "
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
+      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
+
+  airflow:
+    build: ./airflow
+    container_name: airflow
+    platform: linux/amd64
+    depends_on:
+      - airflow-init
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+      AIRFLOW__CORE__TEST_CONNECTION: "enabled"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
+      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
+    ports:
+      - "8080:8080"
+    command: webserver
+
+  airflow-scheduler:
+    build: ./airflow
+    container_name: airflow-scheduler
+    platform: linux/amd64
+    depends_on:
+      - airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: mysql+mysqldb://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}
+      AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
+      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
+    command: scheduler
+
+  webhook:
+    image: python:3.12
+    container_name: webhook
+    volumes:
+      - ./webhook.py:/app/webhook.py
+    working_dir: /app
+    command: bash -c "pip install flask requests && python webhook.py"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - airflow
+
+  oracle-test:
+    build: ./tests/oracle-thick-test
+    environment:
+      - DB_USER=apps
+      - DB_PASSWORD=MyStrongPassword
+      - DB_DSN=oracle:xe

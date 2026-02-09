@@ -1,0 +1,6 @@
+docker run -e DB_USER=system -e DB_PASSWORD=yourStrongPassword -e DB_DSN="oracle:1521/XE" -it test-oracle-xe
+
+docker run -e DB_USER=system -e DB_PASSWORD=yourStrongPassword -e DB_DSN="oracle:1521/XE" -it ebs-deploy-simulation-oracle-test
+
+docker build -t test-oracle-xe .
+

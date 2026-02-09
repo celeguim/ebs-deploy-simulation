@@ -1,0 +1,7 @@
+.idea
+.venv
+*.log
+*.zip
+*.gz
+.env
+airflow/logs
