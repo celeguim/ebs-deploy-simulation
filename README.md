@@ -39,10 +39,9 @@ wget --no-check-certificate https://repo1.maven.org/maven2/org/flywaydb/flyway-c
 docker compose build --progress=plain --no-cache > build_oracle.log 2>&1
 docker compose build --progress=plain 2>&1 | tee build_oracle.log
 
-sudo docker compose up -d mysql
-sudo docker compose up -d oracle
+sudo docker[ebs-dev-deploy.py](airflow/dags/ebs-dev-deploy.py) compose up -d mysql
 sudo docker compose up airflow-init
-sudo docker logs airflow-init --follow
+facesudo docker logs airflow-init --follow
 sudo docker compose up -d airflow
 sudo docker logs airflow --follow
 sudo docker compose up -d airflow-scheduler
@@ -71,7 +70,7 @@ $ curl -X POST http://localhost:5000/webhook   -H "Content-Type: application/jso
 {"airflow_status":200}
 
 # criar connection no airflow
-id: oracle_ebs_conn
+id: ebs_dev_conn
 tipo: oracle
 host: 172.30.71.145 (docker)
 schema/login: celeghin

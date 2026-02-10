@@ -24,10 +24,10 @@ services:
       bash -c "airflow db migrate &&
                airflow users create -u admin -p admin -f Admin -l User -r Admin -e admin@example.com; "
     volumes:
-      - ./airflow/dags:/opt/airflow/dags
+#      - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
-      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
-      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
+#      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
+#      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
 
   airflow:
     build: ./airflow
@@ -83,6 +83,6 @@ services:
   oracle-test:
     build: ./tests/oracle-thick-test
     environment:
-      - DB_USER=apps
-      - DB_PASSWORD=MyStrongPassword
-      - DB_DSN=oracle:xe
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DSN=${DB_DSN}

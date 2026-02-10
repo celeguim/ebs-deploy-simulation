@@ -5,7 +5,7 @@ from datetime import datetime
 from airflow.hooks.base import BaseHook
 
 with DAG(
-        dag_id="ebs_dev_repair",
+        dag_id="ebs_dev_deploy",
         start_date=datetime(2026, 1, 1),
         schedule=None,
         catchup=False,
@@ -22,7 +22,7 @@ with DAG(
     oracle_password = conn.password
 
     run_flyway_debug = BashOperator(
-        task_id="repair",
+        task_id="deploy",
 
         params={
             "oracle_host": oracle_host,
@@ -46,7 +46,8 @@ with DAG(
         echo LD_LIBRARY_PATH $LD_LIBRARY_PATH
         export JAVA_OPTS="-Djava.library.path=/opt/oracle/instantclient_21_21"
 
-        flyway -X repair \
+        flyway -X migrate \
+          -baselineOnMigrate=true \
           -url=jdbc:oracle:oci:@//{{ params.oracle_host }}:{{ params.oracle_port }}/{{ params.oracle_service }} \
           -user={{ params.oracle_user }} \
           -password={{ params.oracle_password }} \

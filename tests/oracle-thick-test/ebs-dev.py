@@ -20,7 +20,7 @@ try:
             # cursor.execute("create user celeghin identified by celeghin")
             # cursor.execute("grant connect, resource to celeghin")
             # cursor.execute("ALTER USER celeghin QUOTA 100M ON USERS")
-            print("User celeghin created successfully")
+            # print("User celeghin created successfully")
 
 except oracledb.Error as e:
     print(f"Connection failed: {e}")

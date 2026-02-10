@@ -16,12 +16,22 @@ with DAG(
 
     oracle_host = conn.host
     oracle_port = conn.port
-    oracle_service = conn.schema
+    # oracle_service = conn.extra.service_name
+    oracle_service = conn.extra_dejson.get('service_name')
     oracle_user = conn.login
     oracle_password = conn.password
 
     run_flyway_debug = BashOperator(
         task_id="deploy",
+
+        params={
+            "oracle_host": oracle_host,
+            "oracle_port": oracle_port,
+            "oracle_service": oracle_service,
+            "oracle_user": oracle_user,
+            "oracle_password": oracle_password
+        },
+
         bash_command="""
         set -euxo pipefail
 
@@ -38,9 +48,9 @@ with DAG(
 
         flyway -X migrate \
           -baselineOnMigrate=true \
-          -url=jdbc:oracle:oci:@//{oracle_host}:{oracle_port}/{oracle_service} \
-          -user={oracle_user} \
-          -password={oracle_password} \
+          -url=jdbc:oracle:oci:@//{{ params.oracle_host }}:{{ params.oracle_port }}/{{ params.oracle_service }} \
+          -user={{ params.oracle_user }} \
+          -password={{ params.oracle_password }} \
           -locations=filesystem:/opt/airflow/flyway/sql-prd
 
         """
