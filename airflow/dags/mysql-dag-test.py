@@ -9,7 +9,7 @@ with DAG(
         schedule=None,
         catchup=False,
 ) as dag:
-    # DEBUG
+
     run_flyway_debug = BashOperator(
         task_id="migrate",
         bash_command="""

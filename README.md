@@ -39,7 +39,7 @@ wget --no-check-certificate https://repo1.maven.org/maven2/org/flywaydb/flyway-c
 docker compose build --progress=plain --no-cache > build_oracle.log 2>&1
 docker compose build --progress=plain 2>&1 | tee build_oracle.log
 
-sudo docker[ebs-dev-deploy.py](airflow/dags/ebs-dev-deploy.py) compose up -d mysql
+sudo docker compose up -d mysql
 sudo docker compose up airflow-init
 facesudo docker logs airflow-init --follow
 sudo docker compose up -d airflow

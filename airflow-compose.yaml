@@ -3,6 +3,9 @@ services:
   mysql:
     image: mysql:8.1
     container_name: mysql
+    restart: unless-stopped
+    volumes:
+      - mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -24,10 +27,7 @@ services:
       bash -c "airflow db migrate &&
                airflow users create -u admin -p admin -f Admin -l User -r Admin -e admin@example.com; "
     volumes:
-#      - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
-#      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
-#      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
 
   airflow:
     build: ./airflow
@@ -80,9 +80,37 @@ services:
     depends_on:
       - airflow
 
-  oracle-test:
+  oracle-ebs-test:
     build: ./tests/oracle-thick-test
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DSN=${DB_DSN}
+
+  oracle-xe:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    # container_name: oracle-xe
+    ports:
+      - 1521:1521
+    environment:
+      ORACLE_PWD: ${DB_PASSWORD}
+    # volumes:
+    #   - oracle_data:/opt/oracle/oradata
+
+  oracle-xe-test:
+    build: ./tests/oracle-thick-test
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DSN=${DB_DSN}
+
+
+volumes:
+  mysql_data:
+    name: mysql_data
+    driver: local
+
+#   oracle_data:
+#     name: oracle_data
+#     driver: local
+
