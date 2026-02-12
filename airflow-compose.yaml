@@ -80,30 +80,29 @@ services:
     depends_on:
       - airflow
 
-  oracle-ebs-test:
-    build: ./tests/oracle-thick-test
+  oracle:
+    image: gvenzl/oracle-xe
+    container_name: oracle
     environment:
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_DSN=${DB_DSN}
-
-  oracle-xe:
-    image: container-registry.oracle.com/database/express:21.3.0-xe
-    # container_name: oracle-xe
+      ORACLE_PASSWORD: ${XE_PWD}
     ports:
-      - 1521:1521
-    environment:
-      ORACLE_PWD: ${DB_PASSWORD}
+      - "1521:1521"
     # volumes:
     #   - oracle_data:/opt/oracle/oradata
 
   oracle-xe-test:
     build: ./tests/oracle-thick-test
     environment:
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_DSN=${DB_DSN}
+      - DB_USER=${XE_USER}
+      - DB_PASSWORD=${XE_PWD}
+      - DB_DSN=${XE_DSN}
 
+  ebs-dev-test:
+    build: ./tests/oracle-thick-test
+    environment:
+      - DB_USER=${EBS_USER}
+      - DB_PASSWORD=${EBS_PASSWORD}
+      - DB_DSN=${EBS_DSN}
 
 volumes:
   mysql_data:

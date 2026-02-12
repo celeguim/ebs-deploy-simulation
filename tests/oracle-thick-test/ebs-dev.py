@@ -22,5 +22,10 @@ try:
             # cursor.execute("ALTER USER celeghin QUOTA 100M ON USERS")
             # print("User celeghin created successfully")
 
+            sql = "SELECT banner FROM v$version"
+            cursor.execute(sql)
+            for row in cursor:
+                print(row)
+
 except oracledb.Error as e:
     print(f"Connection failed: {e}")
