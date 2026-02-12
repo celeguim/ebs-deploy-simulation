@@ -32,8 +32,9 @@ docker exec -it airflow airflow dags list-import-errors
 wget --no-check-certificate https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip
 wget --no-check-certificate https://download.oracle.com/otn_software/linux/instantclient/2121000/instantclient-basiclite-linux.x64-21.21.0.0.0dbru.zip
 wget --no-check-certificate https://download.oracle.com/otn_software/linux/instantclient/2121000/instantclient-basic-linux.x64-21.21.0.0.0dbru.zip
-https://download.oracle.com/otn_software/linux/instantclient/1930000/instantclient-basic-linux.x64-19.30.0.0.0dbru.zip
+wget --no-check-certificate https://download.oracle.com/otn_software/linux/instantclient/1930000/instantclient-basic-linux.x64-19.30.0.0.0dbru.zip
 wget --no-check-certificate https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/11.8.0/flyway-commandline-11.8.0-linux-x64.tar.gz
+wget --no-check-certificate https://github.com/flyway/flyway/releases/download/flyway-12.0.0/flyway-commandline-12.0.0-linux-x64.tar.gz
 
  ```
 docker compose build --progress=plain --no-cache > build_oracle.log 2>&1

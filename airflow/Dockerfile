@@ -41,7 +41,9 @@ USER root
 WORKDIR /opt/oracle
 
 # oracle thick client dependencies
-RUN apt-get update && apt-get install -y libaio1 wget unzip && apt-get clean && rm -rf /var/lib/apt/lists/*
+# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# RUN apt-get -o Acquire::http::No-Cache=true -o Acquire::http::Pipeline-Depth=0 update
+RUN apt-get clean && apt-get update && apt-get install -y libaio1 wget unzip && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # INCOMPATIBLE VERSION 23
 #COPY instantclient-basiclite-linuxx64.zip .
