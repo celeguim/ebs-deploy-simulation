@@ -1,0 +1,6 @@
+Apache Airflow is an open-source platform 
+used to programmatically author, schedule, 
+and monitor workflows, primarily for data engineering 
+pipelines (ETL/ELT). Workflows are defined as Python-based 
+Directed Acyclic Graphs (DAGs), enabling complex 
+task dependencies, retries, and monitoring via a web UI. 

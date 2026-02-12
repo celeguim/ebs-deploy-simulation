@@ -1,0 +1,7 @@
+Flyway is an open-source database migration tool that 
+enables version control for database schemas, 
+allowing developers to manage, track, and automate 
+changes (such as creating or altering tables) across 
+different environments (development, test, production) 
+using SQL or Java migrations.
+
