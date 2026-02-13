@@ -35,9 +35,7 @@ with DAG(
         flyway -v
 
         echo "=== Listing migrations directory ==="
-
-        ls -lah /opt/airflow/flyway/oracle-deploy
-        ls -lah /opt/airflow/flyway/oracle-rollback
+        ls -lah /opt/airflow/flyway/sql
 
         echo "=== Running Flyway migrate ==="
 
@@ -49,7 +47,7 @@ with DAG(
           -url=jdbc:oracle:oci:@//{{ params.oracle_host }}:{{ params.oracle_port }}/{{ params.oracle_service }} \
           -user={{ params.oracle_user }} \
           -password={{ params.oracle_password }} \
-          -locations=filesystem:/opt/airflow/flyway/oracle-deploy
+          -locations=filesystem:/opt/airflow/flyway/sql
 
         """
     )

@@ -54,24 +54,52 @@ sudo docker compose build
 
 sudo snap start docker
 docker compose -f airflow-compose.yaml up -d mysql
-docker compose -f airflow-compose.yaml up airflow-init
-docker compose -f airflow-compose.yaml up -d airflow
 docker compose -f airflow-compose.yaml up -d oracle
+docker compose -f airflow-compose.yaml up airflow-init
+docker compose -f airflow-compose.yaml up airflow
 docker compose -f airflow-compose.yaml up airflow-scheduler
 docker compose -f airflow-compose.yaml up oracle-xe-test
+docker compose -f airflow-compose.yaml down
+docker compose -f airflow-compose.yaml build
+docker exec -it airflow bash
+docker volume rm oracle_data
+docker volume rm mysql_data
 
+docker exec -it airflow airflow connections add ebs_dev_conn \
+  --conn-type oracle \
+  --conn-host localhost \
+  --conn-schema apps \
+  --conn-login apps \
+  --conn-extra "{  "thick_mode": true,  "service_name": "XE" }" \
+  --conn-port 1521
 
+docker exec -it airflow airflow connections delete oracle_xe_conn 
+
+docker exec -it airflow airflow connections test oracle_xe_conn 
+
+docker exec -it airflow airflow connections add oracle_xe_conn \
+  --conn-type oracle \
+  --conn-host oracle \
+  --conn-schema system \
+  --conn-login system \
+  --conn-password oracle \
+  --conn-extra '{"thick_mode": true, "service_name": "XE"}' \
+  --conn-port 1521
 
 ```
 
 $ docker run --rm --name oracle-db -p 1521:1521 -e ORACLE_PASSWORD=yourStrongPassword gvenzl/oracle-xe
 
 # Airflow call API -> trigger DAG
-$ curl -X POST "http://localhost:8080/api/v1/dags/mysql_dev_deploy/dagRuns" -u admin:admin -H "Content-Type: application/json" -d '{"conf": {"source": "manual-test"}}'
+curl -X POST "http://localhost:8080/api/v1/dags/mysql_dev_deploy/dagRuns" -u admin:admin -H "Content-Type: application/json" -d '{"conf": {"source": "manual-test"}}'
+curl -X POST "http://localhost:8080/api/v1/dags/oracle_xe_deploy/dagRuns" -u admin:admin -H "Content-Type: application/json" -d '{"conf": {"source": "manual-test"}}'
 
 # git webhook
 $ curl -X POST http://localhost:5000/webhook   -H "Content-Type: application/json"   -d '{"msg":"it just works"}'
 {"airflow_status":200}
+
+select owner, object_name from all_objects where object_name like '%FLYWAY%';
+
 
 # criar connection no airflow
 id: ebs_dev_conn
@@ -82,7 +110,6 @@ pwd: celeghin
 extra:
 {
   "thick_mode": true,
-  "thick_mode_lib_dir": "/opt/oracle/instantclient_23_26",
   "service_name": "XE"
 }
 

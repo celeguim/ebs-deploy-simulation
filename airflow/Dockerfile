@@ -22,13 +22,7 @@ RUN python3 -V
 RUN python3 -m pip install --upgrade pip
 COPY constraints-3.12.txt /tmp/constraints.txt
 RUN echo "pip silent install .."
-RUN python3 -m pip install --no-cache-dir \
-    apache-airflow-providers-oracle \
-    --constraint /tmp/constraints.txt
-#RUN /usr/bin/env -u AIRFLOW_CONSTRAINTS_LOCATION \
-#                 -u AIRFLOW_CONSTRAINTS_REFERENCE \
-#                 pip install --no-cache-dir \
-#                 apache-airflow-providers-oracle oracledb >/dev/null
+RUN python3 -m pip install --no-cache-dir apache-airflow-providers-oracle --constraint /tmp/constraints.txt
 ENV PATH="/home/airflow/.local/bin:${PATH}"
 RUN echo "PATH after: ${PATH}"
 RUN pip show oracledb
@@ -63,8 +57,11 @@ ENV ORACLE_HOME="/opt/oracle/instantclient_21_21"
 
 USER airflow
 WORKDIR /home/airflow
-RUN mkdir -p /opt/airflow/flyway/sql-dev
-RUN mkdir -p /opt/airflow/flyway/sql-prd
+RUN mkdir -p /opt/airflow/flyway/sql
+# RUN mkdir -p /opt/airflow/flyway/mysql-deploy
+# RUN mkdir -p /opt/airflow/flyway/mysql-rollback
+# RUN mkdir -p /opt/airflow/flyway/oracle-deploy
+# RUN mkdir -p /opt/airflow/flyway/oracle-rollback
 
 # flyway dependencies
 WORKDIR /opt/flyway-${FLYWAY_VERSION}

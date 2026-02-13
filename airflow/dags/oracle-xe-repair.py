@@ -5,24 +5,23 @@ from datetime import datetime
 from airflow.hooks.base import BaseHook
 
 with DAG(
-        dag_id="ebs_dev_deploy",
+        dag_id="ebs_dev_repair",
         start_date=datetime(2026, 1, 1),
         schedule=None,
         catchup=False,
 ) as dag:
     # DEBUG
 
-    conn = BaseHook.get_connection("ebs_dev_conn")
+    conn = BaseHook.get_connection("oracle_xe_conn")
 
     oracle_host = conn.host
     oracle_port = conn.port
-    # oracle_service = conn.extra.service_name
     oracle_service = conn.extra_dejson.get('service_name')
     oracle_user = conn.login
     oracle_password = conn.password
 
     run_flyway_debug = BashOperator(
-        task_id="deploy",
+        task_id="repair",
 
         params={
             "oracle_host": oracle_host,
@@ -39,19 +38,18 @@ with DAG(
         flyway -v
 
         echo "=== Listing migrations directory ==="
-        ls -lah /opt/airflow/flyway/sql-prd
+        ls -lah /opt/airflow/flyway/sql
 
-        echo "=== Running Flyway migrate ==="
+        echo "=== Running Flyway repair ==="
 
         echo LD_LIBRARY_PATH $LD_LIBRARY_PATH
         export JAVA_OPTS="-Djava.library.path=/opt/oracle/instantclient_21_21"
 
-        flyway -X migrate \
-          -baselineOnMigrate=true \
+        flyway -X repair \
           -url=jdbc:oracle:oci:@//{{ params.oracle_host }}:{{ params.oracle_port }}/{{ params.oracle_service }} \
           -user={{ params.oracle_user }} \
           -password={{ params.oracle_password }} \
-          -locations=filesystem:/opt/airflow/flyway/sql-prd
+          -locations=filesystem:/opt/airflow/flyway/sql
 
         """
     )

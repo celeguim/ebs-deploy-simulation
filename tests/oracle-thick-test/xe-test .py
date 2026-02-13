@@ -1,4 +1,3 @@
-import os
 import oracledb
 
 try:
@@ -9,15 +8,14 @@ try:
     ) as connection:
         print("Successfully connected!")
         with connection.cursor() as cursor:
-            sql = "SELECT to_char(SYSDATE, 'yyyy-MM-dd HH:MI:SS') FROM DUAL"
-            for row in cursor.execute(sql):
+            print('Looking for DEMO tables...')
+            sql = "select owner, table_name from all_tables where table_name like '%DEMO%'"
+            cursor.execute(sql)
+            for row in cursor:
                 print(row)
-            # cursor.execute("create user celeghin identified by celeghin")
-            # cursor.execute("grant connect, resource to celeghin")
-            # cursor.execute("ALTER USER celeghin QUOTA 100M ON USERS")
-            # print("User celeghin created successfully")
 
-            sql = "SELECT banner FROM v$version"
+            print('\nLooking for Flyway history...')
+            sql = 'select * from  "SYSTEM"."flyway_schema_history"'
             cursor.execute(sql)
             for row in cursor:
                 print(row)

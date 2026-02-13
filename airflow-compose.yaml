@@ -45,9 +45,7 @@ services:
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
-      - ./flyway/mysql-deploy:/opt/airflow/flyway/mysql-deploy
-      - ./flyway/oracle-deploy:/opt/airflow/flyway/oracle-deploy
-      - ./flyway/oracle-rollback:/opt/airflow/flyway/oracle-rollback
+      - ./flyway/oracle-sql:/opt/airflow/flyway/sql
     ports:
       - "8080:8080"
     command: webserver
@@ -65,9 +63,7 @@ services:
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
-      - ./flyway/mysql-deploy:/opt/airflow/flyway/mysql-deploy
-      - ./flyway/oracle-deploy:/opt/airflow/flyway/oracle-deploy
-      - ./flyway/oracle-rollback:/opt/airflow/flyway/oracle-rollback
+      - ./flyway/oracle-sql:/opt/airflow/flyway/sql
     command: scheduler
 
   webhook:
@@ -114,4 +110,3 @@ volumes:
   oracle_data:
     name: oracle_data
     driver: local
-

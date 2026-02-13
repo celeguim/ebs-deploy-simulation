@@ -10,13 +10,9 @@ with DAG(
         schedule=None,
         catchup=False,
 ) as dag:
-    # DEBUG
-
     conn = BaseHook.get_connection("ebs_dev_conn")
-
     oracle_host = conn.host
     oracle_port = conn.port
-    # oracle_service = conn.extra.service_name
     oracle_service = conn.extra_dejson.get('service_name')
     oracle_user = conn.login
     oracle_password = conn.password
@@ -39,7 +35,7 @@ with DAG(
         flyway -v
 
         echo "=== Listing migrations directory ==="
-        ls -lah /opt/airflow/flyway/sql-prd
+        ls -lah /opt/airflow/flyway/sql
 
         echo "=== Running Flyway migrate ==="
 
@@ -51,7 +47,7 @@ with DAG(
           -url=jdbc:oracle:oci:@//{{ params.oracle_host }}:{{ params.oracle_port }}/{{ params.oracle_service }} \
           -user={{ params.oracle_user }} \
           -password={{ params.oracle_password }} \
-          -locations=filesystem:/opt/airflow/flyway/sql-prd
+          -locations=filesystem:/opt/airflow/flyway/sql
 
         """
     )
