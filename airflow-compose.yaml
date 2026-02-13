@@ -45,8 +45,9 @@ services:
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
-      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
-      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
+      - ./flyway/mysql-deploy:/opt/airflow/flyway/mysql-deploy
+      - ./flyway/oracle-deploy:/opt/airflow/flyway/oracle-deploy
+      - ./flyway/oracle-rollback:/opt/airflow/flyway/oracle-rollback
     ports:
       - "8080:8080"
     command: webserver
@@ -64,8 +65,9 @@ services:
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
-      - ./flyway/sql-dev:/opt/airflow/flyway/sql-dev
-      - ./flyway/sql-prd:/opt/airflow/flyway/sql-prd
+      - ./flyway/mysql-deploy:/opt/airflow/flyway/mysql-deploy
+      - ./flyway/oracle-deploy:/opt/airflow/flyway/oracle-deploy
+      - ./flyway/oracle-rollback:/opt/airflow/flyway/oracle-rollback
     command: scheduler
 
   webhook:
@@ -87,8 +89,8 @@ services:
       ORACLE_PASSWORD: ${XE_PWD}
     ports:
       - "1521:1521"
-    # volumes:
-    #   - oracle_data:/opt/oracle/oradata
+    volumes:
+      - oracle_data:/opt/oracle/oradata
 
   oracle-xe-test:
     build: ./tests/oracle-thick-test
@@ -109,7 +111,7 @@ volumes:
     name: mysql_data
     driver: local
 
-#   oracle_data:
-#     name: oracle_data
-#     driver: local
+  oracle_data:
+    name: oracle_data
+    driver: local
 

@@ -52,10 +52,13 @@ sudo docker compose ps
 sudo docker compose down -v
 sudo docker compose build
 
-docker compose up -d mysql
-docker compose up airflow-init
-docker compose up -d airflow
-docker compose up airflow-scheduler
+sudo snap start docker
+docker compose -f airflow-compose.yaml up -d mysql
+docker compose -f airflow-compose.yaml up airflow-init
+docker compose -f airflow-compose.yaml up -d airflow
+docker compose -f airflow-compose.yaml up -d oracle
+docker compose -f airflow-compose.yaml up airflow-scheduler
+docker compose -f airflow-compose.yaml up oracle-xe-test
 
 
 

@@ -2,15 +2,10 @@ import os
 import oracledb
 
 try:
-    # for thick client
-    # oracledb.init_oracle_client()
-    print("Oracle Thick mode initialized")
-    print(f"os.getenv(DB_DSN) : {os.getenv('DB_DSN')}" )
-
     with oracledb.connect(
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASSWORD"),
-            dsn=os.getenv("DB_DSN")
+            user="system",
+            password="oracle",
+            dsn="localhost:1521/XE",
     ) as connection:
         print("Successfully connected!")
         with connection.cursor() as cursor:
