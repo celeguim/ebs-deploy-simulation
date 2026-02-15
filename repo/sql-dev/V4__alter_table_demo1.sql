@@ -1,2 +1,0 @@
-ALTER TABLE xx_demo1
-ADD email VARCHAR(50);

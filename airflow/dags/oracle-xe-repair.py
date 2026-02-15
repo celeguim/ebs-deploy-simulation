@@ -5,7 +5,7 @@ from datetime import datetime
 from airflow.hooks.base import BaseHook
 
 with DAG(
-        dag_id="ebs_dev_repair",
+        dag_id="oracle_xe_repair",
         start_date=datetime(2026, 1, 1),
         schedule=None,
         catchup=False,

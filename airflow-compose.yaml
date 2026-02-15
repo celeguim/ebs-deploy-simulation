@@ -80,6 +80,7 @@ services:
 
   oracle:
     image: gvenzl/oracle-xe
+    platform: linux/arm64
     container_name: oracle
     environment:
       ORACLE_PASSWORD: ${XE_PWD}
@@ -99,7 +100,7 @@ services:
     build: ./tests/oracle-thick-test
     environment:
       - DB_USER=${EBS_USER}
-      - DB_PASSWORD=${EBS_PASSWORD}
+      - DB_PASSWORD=${EBS_PWD}
       - DB_DSN=${EBS_DSN}
 
 volumes:
