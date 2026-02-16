@@ -12,5 +12,10 @@ create table aaaaa_demo2 (
 );
 
 select table_name from user_tables where table_name like '%DEMO%';
+select * from aaaaa_demo1;
+select * from aaaaa_demo2;
 
-select * from "flyway_schema_history";
+select * from "flyway_schema_history" order by 1;
+
+--delete from "flyway_schema_history";
+--commit;

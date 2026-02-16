@@ -91,8 +91,9 @@ docker exec -it airflow airflow connections add oracle_xe_conn \
 $ docker run --rm --name oracle-db -p 1521:1521 -e ORACLE_PASSWORD=yourStrongPassword gvenzl/oracle-xe
 
 # Airflow call API -> trigger DAG
-curl -X POST "http://localhost:8080/api/v1/dags/mysql_dev_deploy/dagRuns" -u admin:admin -H "Content-Type: application/json" -d '{"conf": {"source": "manual-test"}}'
 curl -X POST "http://localhost:8080/api/v1/dags/oracle_xe_deploy/dagRuns" -u admin:admin -H "Content-Type: application/json" -d '{"conf": {"source": "manual-test"}}'
+
+curl -X POST "http://localhost:8080/api/v1/dags/oracle_xe_repair/dagRuns" -u admin:admin -H "Content-Type: application/json" -d '{"conf": {"source": "manual-test"}}'
 
 # git webhook
 $ curl -X POST http://localhost:5000/webhook   -H "Content-Type: application/json"   -d '{"msg":"it just works"}'
