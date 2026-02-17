@@ -1,0 +1,35 @@
+name: EBS Customizations CI
+
+# on:
+#   pull_request:
+#     branches: [ main ]
+
+on: push
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Validate repository structure
+        run: python ci/validate_structure.py
+
+      - name: Validate metadata files
+        run: python ci/validate_metadata.py
+
+      - name: Validate SQL safety rules
+        run: python ci/validate_sql.py
+
+      - name: Detect impacted objects
+        run: python ci/detect_objects.py
