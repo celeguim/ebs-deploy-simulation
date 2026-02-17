@@ -3,7 +3,7 @@ import oracledb
 
 try:
     # for thick client
-    # oracledb.init_oracle_client()
+    oracledb.init_oracle_client()
     print("Oracle Thick mode initialized")
     print(f"os.getenv(DB_DSN) : {os.getenv('DB_DSN')}" )
 

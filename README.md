@@ -40,27 +40,26 @@ wget --no-check-certificate https://github.com/flyway/flyway/releases/download/f
 docker compose build --progress=plain --no-cache > build_oracle.log 2>&1
 docker compose build --progress=plain 2>&1 | tee build_oracle.log
 
-sudo docker compose up -d mysql
-sudo docker compose up airflow-init
-facesudo docker logs airflow-init --follow
-sudo docker compose up -d airflow
+sudo docker compose -f airflow-compose.yaml up -d mysql
+sudo docker compose -f airflow-compose.yaml up airflow-init
+sudo docker compose -f airflow-compose.yaml up -d airflow
 sudo docker logs airflow --follow
-sudo docker compose up -d airflow-scheduler
-sudo docker compose up webhook
-sudo docker compose up oracle-test
-sudo docker compose ps
-sudo docker compose down -v
-sudo docker compose build
+sudo docker compose -f airflow-compose.yaml up airflow-scheduler
+sudo docker compose -f airflow-compose.yaml up webhook
+sudo docker compose -f airflow-compose.yaml up ebs-dev-test
+sudo docker compose -f airflow-compose.yaml ps
+sudo docker compose -f airflow-compose.yaml down
+sudo docker compose -f airflow-compose.yaml build
 
 sudo snap start docker
 docker compose -f airflow-compose.yaml up -d mysql
 docker compose -f airflow-compose.yaml up -d oracle
 docker compose -f airflow-compose.yaml up airflow-init
 docker compose -f airflow-compose.yaml up airflow
-docker compose -f airflow-compose.yaml up airflow-scheduler
+docker compose -f airflow-compose.yaml up -d airflow-scheduler
 docker compose -f airflow-compose.yaml up oracle-xe-test
 docker compose -f airflow-compose.yaml down
-docker compose -f airflow-compose.yaml build
+docker compose -f airflow-compose.yaml build --no-cache
 docker exec -it airflow bash
 docker volume rm oracle_data
 docker volume rm mysql_data
@@ -70,7 +69,7 @@ docker exec -it airflow airflow connections add ebs_dev_conn \
   --conn-host localhost \
   --conn-schema apps \
   --conn-login apps \
-  --conn-extra "{  "thick_mode": true,  "service_name": "XE" }" \
+  --conn-extra '{ "thick_mode": true,  "service_name": "DEV" }' \
   --conn-port 1521
 
 docker exec -it airflow airflow connections delete oracle_xe_conn 
