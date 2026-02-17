@@ -3,7 +3,7 @@ name: EBS Customizations CI -
 on:
   push:
     branches:
-      - dev/update1
+      - "dev/update1"
 
 jobs:
   validate:
