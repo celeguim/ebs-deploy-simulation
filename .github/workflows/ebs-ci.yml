@@ -4,9 +4,7 @@ name: EBS Customizations CI
 #   pull_request:
 #     branches: [ main ]
 
-on: 
-  push:
-    branches: [ dev/update1 ]
+on: [push]
 
 jobs:
   validate:
