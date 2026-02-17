@@ -1,4 +1,4 @@
-name: EBS Customizations CI
+name: EBS Customizations CI -
 
 on:
   push:
