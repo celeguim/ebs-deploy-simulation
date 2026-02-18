@@ -8,7 +8,9 @@ CONN_PARAMS = {
     "password": "oracle",
     "dsn": "localhost:1521/XE"
 }
+
 SCHEMA = "system"
+SCHEMA = "celeghin"
 
 
 def create_schema():
@@ -41,10 +43,12 @@ def get_ordered_ddl(schema):
     cursor = conn.cursor()
 
     # 1. Fetch all objects and their types
+    #         "SELECT object_name, object_type FROM dba_objects WHERE owner = :s AND object_type IN ('TABLE','VIEW','PROCEDURE')",
     cursor.execute(
-        "SELECT object_name, object_type FROM dba_objects WHERE owner = :s AND object_type IN ('TABLE','VIEW','PROCEDURE')",
+        "SELECT object_name, object_type FROM dba_objects WHERE owner = :s",
         s=schema,
     )
+
     obj_metadata = {name: otype for name, otype in cursor}
 
     # 2. Build Dependency Graph (Parent -> Child)
@@ -65,6 +69,7 @@ def get_ordered_ddl(schema):
 
     # 3. Topological Sort (Kahn's Algorithm)
     queue = deque([obj for obj in obj_metadata if in_degree[obj] == 0])
+
     ordered_objects = []
     while queue:
         u = queue.popleft()
@@ -74,8 +79,8 @@ def get_ordered_ddl(schema):
             if in_degree[v] == 0:
                 queue.append(v)
 
-    print(queue)
     print(ordered_objects)
+# ['TEST_DATA', 'TEST_VIEW', 'TEST_PROC', 'TEST_VIEW1', 'TEST_VIEW2', 'TEST_PROC1', 'TEST_PROC2']
 
     # 4. Extract DDL in Order
     # print(f"\n--- DDL REPORT FOR {schema} ---")

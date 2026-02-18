@@ -25,13 +25,13 @@ SELECT owner,
        referenced_name, 
        referenced_type
 FROM dba_dependencies
-WHERE owner = 'ORACLE_OCM'
+WHERE owner = 'CELEGHIN'
 START WITH referenced_name IS NOT NULL
 CONNECT BY PRIOR name = referenced_name 
        AND PRIOR type = referenced_type;
 -- ORDER SIBLINGS BY level;
 
-select * from dba_dependencies where owner = 'SYSTEM' and referenced_name is not null;
+select * from dba_dependencies where owner = 'CELEGHIN';
 
 select * from DEPTREE;
 
