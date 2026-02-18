@@ -19,3 +19,4 @@ select * from "flyway_schema_history" order by 1;
 
 --delete from "flyway_schema_history";
 --commit;
+

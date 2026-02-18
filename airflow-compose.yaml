@@ -82,7 +82,8 @@ services:
 
   oracle:
     image: gvenzl/oracle-xe
-    platform: linux/arm64
+    # platform: linux/arm64
+    platform: linux/amd64
     container_name: oracle
     environment:
       ORACLE_PASSWORD: ${XE_PWD}
