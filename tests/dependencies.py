@@ -274,7 +274,7 @@ def generate_ebs_delta_report(start_date):
 
 def generate_simple_order_report(start_date):
 
-    # for thick client
+    print("Getting connection")
     oracledb.init_oracle_client()
     conn = oracledb.connect(**CONN_PARAMS)
     cursor = conn.cursor()
@@ -288,7 +288,7 @@ def generate_simple_order_report(start_date):
         FROM dba_objects 
         WHERE owner = :s 
           AND last_ddl_time >= :dt
-          AND object_type IN ('TABLE')
+          AND object_type IN ('TABLE', 'VIEW', 'PROCEDURE', 'FUNCTION', 'PACKAGE', 'PACKAGE BODY', 'TYPE')
           AND object_name NOT LIKE 'BIN$%'
     """,
         s=SCHEMA,
@@ -326,7 +326,9 @@ def generate_simple_order_report(start_date):
     )
 
     for ref_name, name in cursor:
+        # print(f"Checking ref_name/name: {ref_name}/{name}")
         if ref_name in obj_info and name in obj_info:
+            print(f"Dependency found ref_name/name: {ref_name}/{name}")
             adj[ref_name].append(name)
             in_degree[name] += 1
 
@@ -359,6 +361,10 @@ if __name__ == "__main__":
     # get_ordered_ddl(SCHEMA.upper())
     # create_schema()
 
+    init_time = datetime.now()
     start_date = datetime.strptime("2026-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
     # generate_ebs_delta_report(start_date)
     generate_simple_order_report(start_date)
+    end_time = datetime.now()
+    print("Init time: ", init_time)
+    print("End time: ", end_time)
