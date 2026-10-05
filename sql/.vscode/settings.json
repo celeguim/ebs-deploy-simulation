@@ -1,0 +1,4 @@
+{
+  "oracle.sqldev.connections.default": "DNV_EBS_DEV",
+  "oracle.sqldev.worksheets.autoConnect": true
+}

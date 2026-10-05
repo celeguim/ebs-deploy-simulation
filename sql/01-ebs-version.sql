@@ -1122,3 +1122,8 @@ SELECT SYS_CONTEXT('USERENV','CON_NAME') AS container,
   FROM dual;
 -- Container: DEV
 -- User: APPS 
+
+SELECT property_value AS default_edition
+  FROM database_properties
+ WHERE property_name = 'DEFAULT_EDITION';
+

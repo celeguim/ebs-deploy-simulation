@@ -1,0 +1,7 @@
+{
+  "oracle.sql.developer.connections.default": "DNV-EBS-DEV",
+  "oracle.sql.developer.worksheets.autoConnect": true,
+
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
+}
