@@ -1,14 +1,29 @@
 -- EBS Version Information
-SELECT release_name FROM apps.fnd_product_groups;
+SELECT
+  release_name
+FROM
+  apps.fnd_product_groups;
+
 -- 12.2.12
+SELECT
+  banner
+FROM
+  "v$version";
 
-SELECT banner FROM v$version;
 -- Oracle Database 19c EE Extreme Perf Release 19.0.0.0.0 - Production
+SELECT
+  SYS_CONTEXT ('USERENV', 'CURRENT_EDITION_NAME') AS current_edition
+FROM
+  dual;
 
-SELECT SYS_CONTEXT('USERENV','CURRENT_EDITION_NAME') AS current_edition FROM dual;
 -- V_20261001_1432
+SELECT
+  edition_name,
+  parent_edition_name,
+  usable
+FROM
+  dba_editions;
 
-SELECT edition_name, parent_edition_name, usable FROM dba_editions;
 -- V_20251018_1255	V_20250920_0944	NO
 -- V_20251114_1822	V_20251018_1255	NO
 -- V_20251212_1810	V_20251114_1822	NO
@@ -25,21 +40,38 @@ SELECT edition_name, parent_edition_name, usable FROM dba_editions;
 -- V_20260925_0826	V_20260902_1558	NO
 -- V_20261001_1432	V_20260925_0826	YES
 -- V_20250920_0944	(null)	NO
+SELECT
+  *
+FROM
+  ad_adop_sessions
+ORDER BY
+  adop_session_id DESC
+FETCH FIRST
+  3 ROWS ONLY;
 
-
-SELECT * FROM ad_adop_sessions ORDER BY adop_session_id DESC FETCH FIRST 3 ROWS ONLY;
 -- 426	Y	Y	Y	Y	Y	X	C	ocifra2041	master	1199	V_20261001_1432	(null)	(null)	admin_node#ocifra2041;phase_hash#HASH(0x195f7b8);initial_cutover_status#N;abortmode#0;LOG_LEVEL_VALUES#HASH(0x195f050);num_tries#2;available_nodes#ocifra2041,ocifra2042;hostname#ocifra2041;validation#full;phase_seq_hash#HASH(0x195f830);run_admin_status#1;LOG_LEVEL#HASH(0x195ee70);hotpatch#0;wlsadminpwdstore#;logfile#adop.log;appltop_type#dual;promptmsg#hide;exec_id#;prompt#0;patchcontextfile#/opt/app/oracle/DEV/fs2/inst/apps/DEV_ocifra2041/appl/admin/DEV_ocifra2041.xml;downtime#0;admin_shared_slave_nodes#ocifra2042,;session_id#426;skipsyncerror#No;interim_cutover_desc#ARRAY(0x195f728);patchtop#/opt/app/oracle/DEV/fs_ne/EBSapps/patch;phase#cutover;adpatch_interactive#yes;fileloglevel#disable;diskspace#1;multi_node#1;mtrestart#0;is_master#1;nodbaction#0;original_patches#;cm_wait#5;workers#4;max_workers#999;systemuser#;logidentmode#SUBROUTINE;nodes#ocifra2041,ocifra2042;shared_slave_nodes#;second_level_nodes#;current_phase#cutover;recom_workers#4;original_patchtop#/opt/app/oracle/DEV/fs_ne/EBSapps/patch;lock_wait_interval#60;loglevel#event;merge#no;allowcoredump#No;super_node#HASH(0x195f938);dbloglevel#disable;analytics#0;force#0;runcontextfile#/opt/app/oracle/DEV/fs1/inst/apps/DEV_ocifra2041/appl/admin/DEV_ocifra2041.xml;appltop_id#1199;ebssystemuser#EBS_SYSTEM;	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	(null)	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	(null)	(null)
 -- 426	Y	Y	Y	Y	Y	X	C	ocifra2042	slave	1199	V_20261001_1432	(null)	(null)	admin_node#ocifra2041;phase_hash#HASH(0x1143de8);initial_cutover_status#N;abortmode#0;LOG_LEVEL_VALUES#HASH(0x1143680);available_nodes#ocifra2041,ocifra2042;hostname#ocifra2042;validation#full;phase_seq_hash#HASH(0x1143e60);run_admin_status#1;LOG_LEVEL#HASH(0x11434a0);hotpatch#0;wlsadminpwdstore#;logfile#adop.log;appltop_type#dual;promptmsg#hide;exec_id#;prompt#0;patchcontextfile#/opt/app/oracle/DEV/fs2/inst/apps/DEV_ocifra2042/appl/admin/DEV_ocifra2042.xml;downtime#0;admin_shared_slave_nodes#ocifra2042,;session_id#426;skipsyncerror#No;interim_cutover_desc#ARRAY(0x1143d58);patchtop#/opt/app/oracle/DEV/fs_ne/EBSapps/patch;phase#cutover;adpatch_interactive#yes;fileloglevel#disable;diskspace#1;multi_node#1;mtrestart#0;nodbaction#1;original_patches#;cm_wait#5;workers#4;max_workers#999;systemuser#;logidentmode#SUBROUTINE;nodes#ocifra2041,ocifra2042;shared_slave_nodes#;second_level_nodes#;current_phase#cutover;recom_workers#4;original_patchtop#/opt/app/oracle/DEV/fs_ne/EBSapps/patch;loglevel#event;merge#no;allowcoredump#No;super_node#HASH(0x1143f68);dbloglevel#disable;analytics#0;force#0;runcontextfile#/opt/app/oracle/DEV/fs1/inst/apps/DEV_ocifra2042/appl/admin/DEV_ocifra2042.xml;appltop_id#1199;ebssystemuser#EBS_SYSTEM;	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	01-OCT-26	(null)	(null)
 -- 424	Y	Y	Y	Y	Y	X	C	ocifra2041	master	1199	V_20260925_0826	(null)	(null)	admin_node#ocifra2041;phase_hash#HASH(0x2cc7838);initial_cutover_status#N;abortmode#0;LOG_LEVEL_VALUES#HASH(0x2cc70d0);num_tries#2;available_nodes#ocifra2041,ocifra2042;hostname#ocifra2041;validation#full;phase_seq_hash#HASH(0x2cc78b0);run_admin_status#1;LOG_LEVEL#HASH(0x2cc6ef0);hotpatch#0;wlsadminpwdstore#;logfile#adop.log;appltop_type#dual;promptmsg#hide;exec_id#;prompt#0;patchcontextfile#/opt/app/oracle/DEV/fs1/inst/apps/DEV_ocifra2041/appl/admin/DEV_ocifra2041.xml;downtime#0;admin_shared_slave_nodes#ocifra2042,;session_id#424;skipsyncerror#No;interim_cutover_desc#ARRAY(0x2cc77a8);patchtop#/opt/app/oracle/DEV/fs_ne/EBSapps/patch;phase#cutover;adpatch_interactive#yes;fileloglevel#disable;diskspace#1;multi_node#1;mtrestart#0;is_master#1;nodbaction#0;original_patches#;cm_wait#5;workers#4;max_workers#999;systemuser#;logidentmode#SUBROUTINE;nodes#ocifra2041,ocifra2042;shared_slave_nodes#;second_level_nodes#;current_phase#cutover;recom_workers#4;original_patchtop#/opt/app/oracle/DEV/fs_ne/EBSapps/patch;lock_wait_interval#60;loglevel#event;merge#no;allowcoredump#No;super_node#HASH(0x2cc79b8);dbloglevel#disable;analytics#0;force#0;runcontextfile#/opt/app/oracle/DEV/fs2/inst/apps/DEV_ocifra2041/appl/admin/DEV_ocifra2041.xml;appltop_id#1199;ebssystemuser#EBS_SYSTEM;	25-SEP-26	25-SEP-26	25-SEP-26	25-SEP-26	25-SEP-26	25-SEP-26	25-SEP-26	25-SEP-26	25-SEP-26	25-SEP-26	(null)	(null)
-
 -----------------------------
 -- Custom Objects Count by Owner and Edition
-SELECT owner, edition_name, object_type, COUNT(*) AS qtd
-  FROM dba_objects_ae
- WHERE object_name LIKE 'XX%'
-   AND owner NOT IN ('SYS','SYSTEM')
- GROUP BY owner, edition_name, object_type
- ORDER BY owner, object_type;
+SELECT
+  owner,
+  edition_name,
+  object_type,
+  COUNT(*) AS qtd
+FROM
+  dba_objects_ae
+WHERE
+  object_name LIKE 'XX%'
+  AND owner NOT IN ('SYS', 'SYSTEM')
+GROUP BY
+  owner,
+  edition_name,
+  object_type
+ORDER BY
+  owner,
+  object_type;
+
 -- AP	(null)	INDEX	1
 -- APPS	V_20250920_0944	FUNCTION	35
 -- APPS	V_20251018_1255	FUNCTION	1
@@ -240,15 +272,31 @@ SELECT owner, edition_name, object_type, COUNT(*) AS qtd
 -- XXODI	(null)	TABLE	4
 -- XXPOWERCENTER	(null)	INDEX	1
 -- XXPOWERCENTER	(null)	TABLE	17
-
 -----------------------------
 -- Current User Sessions
-SELECT username, osuser, machine, program, module,
-       COUNT(*) AS sessoes, MAX(logon_time) AS ultimo_logon
-  FROM v$session
- WHERE type = 'USER' AND username IS NOT NULL
- GROUP BY username, osuser, machine, program, module
- ORDER BY username, sessoes DESC;
+SELECT
+  username,
+  osuser,
+  machine,
+  program,
+  module,
+  COUNT(*) AS sessoes,
+  MAX(logon_time) AS ultimo_logon
+FROM
+  "v$session"
+WHERE
+  type = 'USER'
+  AND username IS NOT NULL
+GROUP BY
+  username,
+  osuser,
+  machine,
+  program,
+  module
+ORDER BY
+  username,
+  sessoes DESC;
+
 -- APPLSYSPUB	applmgr	ocifra2041	JDBC Thin Client	JDBC Thin Client	6	05-OCT-26
 -- APPS	applmgr	ocifra2041	EXTRA_MGR@ocifra2041 (TNS V1-V3)	e:FND:cp:EXTRA_MGR	120	05-OCT-26
 -- APPS	applmgr	ocifra2041	JDBC Thin Client	JDBC Thin Client	53	05-OCT-26
@@ -326,13 +374,19 @@ SELECT username, osuser, machine, program, module,
 -- ORDS_PUBLIC_USER	oracle	ocifra2033	Oracle REST Data Services	/_/landing	1	05-OCT-26
 -- RO_YIQLU	YIQLU	NOOSLL26050154	SQL Developer	SQL Developer	1	05-OCT-26
 -- SYS	oracle	ocifra2600-umjv11	sqlplus@ocifra2600-umjv11 (TNS V1-V3)	sqlplus@ocifra2600-umjv11 (TNS V1-V3)	1	05-OCT-26
-
-
 -- Non-Oracle Maintained Users
-SELECT username, account_status, last_login, profile
-  FROM dba_users
- WHERE oracle_maintained = 'N'
- ORDER BY last_login DESC NULLS LAST;
+SELECT
+  username,
+  account_status,
+  last_login,
+  profile
+FROM
+  dba_users
+WHERE
+  oracle_maintained = 'N'
+ORDER BY
+  last_login DESC NULLS LAST;
+
 -- AUTOMIC	OPEN	05-OCT-26 11.20.53.000000000 AM AMERICA/SAO_PAULO	EBS_APPS
 -- APPS	OPEN	05-OCT-26 11.19.24.000000000 AM AMERICA/SAO_PAULO	EBS_APPS
 -- XXABNK	OPEN	05-OCT-26 11.19.20.000000000 AM AMERICA/SAO_PAULO	DEFAULT
@@ -633,16 +687,33 @@ SELECT username, account_status, last_login, profile
 -- RO_KAMWYS	OPEN	(null)	READ_ONLY_PROFILE
 -- RO_JANGJE	OPEN	(null)	READ_ONLY_PROFILE
 -- RO_ANUKAC	OPEN	(null)	READ_ONLY_PROFILE
-
 -----------------------------   
 -- Non-Oracle System Privileges
 -- Quem tem privilégio para alterar código
-SELECT grantee, privilege
-  FROM dba_sys_privs
- WHERE privilege IN ('CREATE ANY PROCEDURE','ALTER ANY PROCEDURE',
-                     'CREATE ANY TABLE','ALTER ANY TABLE','CREATE ANY VIEW')
-   AND grantee NOT IN ('SYS','SYSTEM','DBA','IMP_FULL_DATABASE','DATAPUMP_IMP_FULL_DATABASE')
- ORDER BY grantee, privilege;
+SELECT
+  grantee,
+  privilege
+FROM
+  dba_sys_privs
+WHERE
+  privilege IN (
+    'CREATE ANY PROCEDURE',
+    'ALTER ANY PROCEDURE',
+    'CREATE ANY TABLE',
+    'ALTER ANY TABLE',
+    'CREATE ANY VIEW'
+  )
+  AND grantee NOT IN (
+    'SYS',
+    'SYSTEM',
+    'DBA',
+    'IMP_FULL_DATABASE',
+    'DATAPUMP_IMP_FULL_DATABASE'
+  )
+ORDER BY
+  grantee,
+  privilege;
+
 -- APPS	ALTER ANY PROCEDURE
 -- APPS	ALTER ANY TABLE
 -- APPS	CREATE ANY PROCEDURE
@@ -680,33 +751,59 @@ SELECT grantee, privilege
 -- XXFINBI	CREATE ANY VIEW
 -- XXODI	CREATE ANY VIEW
 -- XXXLCM	CREATE ANY TABLE
-
 -----------------------------
 -- Auditoria e triggers que já existem
-SELECT value FROM v$option WHERE parameter = 'Unified Auditing';
--- TRUE
+SELECT
+  value
+FROM
+  "v$option"
+WHERE
+  parameter = 'Unified Auditing';
 
-SELECT owner, trigger_name, triggering_event, status
-  FROM dba_triggers
- WHERE base_object_type IN ('DATABASE','SCHEMA');
+-- TRUE
+SELECT
+  owner,
+  trigger_name,
+  triggering_event,
+  status
+FROM
+  dba_triggers
+WHERE
+  base_object_type IN ('DATABASE', 'SCHEMA');
+
 -- XXISV	XXISV_MSFTR_CTL_DDLH	CREATE OR ALTER OR DROP 	ENABLED
 -- GSMADMIN_INTERNAL	GSMLOGOFF	LOGOFF 	ENABLED
 -- APPS	FND_TRACE_OFF	LOGOFF 	ENABLED
 -- APPS	FND_ADG_ERROR_TRIGGER	ERROR 	DISABLED
 -- APPS	FND_ADG_LOGOFF_TRIGGER	LOGOFF 	DISABLED
 -- APPS	FND_ADG_LOGON_TRIGGER	LOGON 	DISABLED
+SELECT
+  *
+FROM
+  dba_stmt_audit_opts;
 
-SELECT * FROM dba_stmt_audit_opts;
 -- (null)	(null)	BECOME USER	BY ACCESS	BY ACCESS
 -- (null)	(null)	DIRECTORY	BY ACCESS	BY ACCESS
 -- (null)	(null)	PLUGGABLE DATABASE	BY ACCESS	BY ACCESS
+SELECT
+  event_timestamp,
+  dbusername,
+  os_username,
+  userhost,
+  client_program_name,
+  action_name,
+  object_schema,
+  object_name
+FROM
+  unified_audit_trail
+WHERE
+  action_name LIKE 'CREATE%'
+  OR action_name LIKE 'ALTER%'
+ORDER BY
+  event_timestamp DESC
+FETCH FIRST
+  200 ROWS ONLY;
 
-SELECT event_timestamp, dbusername, os_username, userhost,
-       client_program_name, action_name, object_schema, object_name
-  FROM unified_audit_trail
- WHERE action_name LIKE 'CREATE%' OR action_name LIKE 'ALTER%'
- ORDER BY event_timestamp DESC
- FETCH FIRST 200 ROWS ONLY;
 -- 05-OCT-26 10.22.44.129569000 AM	SYS	oracle	ocifra2600-umjv11	sqlplus@ocifra2600-umjv11 (TNS V1-V3)	ALTER USER	(null)	APEX_PUBLIC_ROUTER
 -- 05-OCT-26 10.08.46.090451000 AM	SYS	oracle	ocifra2600-umjv11	java@ocifra2600-umjv11 (TNS V1-V3)	ALTER USER	(null)	APEX_PUBLIC_ROUTER
 -- 05-OCT-26 10.08.09.708251000 AM	SYS	oracle	ocifra2600-umjv11	java@ocifra2600-umjv11 (TNS V1-V3)	CREATE PACKAGE BODY	APEX_260100	WWV_FLOW_WORKING_COPY_DEV
@@ -907,12 +1004,24 @@ SELECT event_timestamp, dbusername, os_username, userhost,
 -- 05-OCT-26 10.04.27.179397000 AM	SYS	oracle	ocifra2600-umjv11	java@ocifra2600-umjv11 (TNS V1-V3)	CREATE SYNONYM	PUBLIC	APEX_REST_RESOURCE_TEMPLATES
 -- 05-OCT-26 10.04.27.172768000 AM	SYS	oracle	ocifra2600-umjv11	java@ocifra2600-umjv11 (TNS V1-V3)	CREATE SYNONYM	PUBLIC	APEX_REST_RESOURCE_PARAMETERS
 -- 05-OCT-26 10.04.27.166985000 AM	SYS	oracle	ocifra2600-umjv11	java@ocifra2600-umjv11 (TNS V1-V3)	CREATE SYNONYM	PUBLIC	APEX_REST_RESOURCE_MODULES
+SELECT
+  timestamp,
+  username,
+  os_username,
+  userhost,
+  action_name,
+  owner,
+  obj_name
+FROM
+  dba_audit_trail
+WHERE
+  action_name LIKE 'CREATE%'
+  OR action_name LIKE 'ALTER%'
+ORDER BY
+  timestamp DESC
+FETCH FIRST
+  200 ROWS ONLY;
 
- SELECT timestamp, username, os_username, userhost, action_name, owner, obj_name
-  FROM dba_audit_trail
- WHERE action_name LIKE 'CREATE%' OR action_name LIKE 'ALTER%'
- ORDER BY timestamp DESC
- FETCH FIRST 200 ROWS ONLY;
 --  19-JUL-25	AWR_SERVICE	oracle	ocifra1600-pofnl1	CREATE DIRECTORY	SYS	CAW_EXTR
 -- 18-JUL-25	AWR_SERVICE	oracle	ocifra1600-pofnl2	CREATE DIRECTORY	SYS	CAW_EXTR
 -- 18-JUL-25	AWR_SERVICE	oracle	ocifra1600-pofnl1	CREATE DIRECTORY	SYS	CAW_EXTR
@@ -1113,17 +1222,95 @@ SELECT event_timestamp, dbusername, os_username, userhost,
 -- 24-JUN-25	AWR_SERVICE	oracle	ocifra1600-pofnl1	CREATE DIRECTORY	SYS	CAW_EXTR
 -- 24-JUN-25	AWR_SERVICE	oracle	ocifra1600-pofnl1	CREATE DIRECTORY	SYS	CAW_EXTR
 -- 24-JUN-25	AWR_SERVICE	oracle	ocifra1600-pofnl2	CREATE DIRECTORY	SYS	CAW_EXTR
-
 -----------------------------
-
 -- Confirmar que você está no PDB do EBS
-SELECT SYS_CONTEXT('USERENV','CON_NAME') AS container,
-       SYS_CONTEXT('USERENV','SESSION_USER') AS usuario
-  FROM dual;
+SELECT
+  SYS_CONTEXT ('USERENV', 'CON_NAME') AS container,
+  SYS_CONTEXT ('USERENV', 'SESSION_USER') AS usuario
+FROM
+  dual;
+
 -- Container: DEV
 -- User: APPS 
+SELECT
+  property_value AS default_edition
+FROM
+  database_properties
+WHERE
+  property_name = 'DEFAULT_EDITION';
 
-SELECT property_value AS default_edition
-  FROM database_properties
- WHERE property_name = 'DEFAULT_EDITION';
+-- all members of the specified roles
+select
+  grantee,
+  granted_role,
+  default_role,
+  admin_option,
+  delegate_option
+from
+  dba_role_privs
+where
+  granted_role in ('DNVGL_DEVELOPER_ROLE', 'DEVELOPER_ROLE')
+order by
+  granted_role,
+  grantee;
 
+-- privileges granted directly
+select
+  grantee,
+  privilege
+from
+  dba_sys_privs
+where
+  grantee like 'DEV_%'
+order by
+  grantee,
+  privilege;
+
+-- privileges granted through roles
+select
+  rp.grantee,
+  rp.granted_role,
+  sp.privilege
+from
+  dba_role_privs rp
+  join role_sys_privs sp on sp.role = rp.granted_role
+where
+  rp.grantee like 'DEV_%'
+  and sp.privilege in (
+    'CREATE ANY PROCEDURE',
+    'ALTER ANY PROCEDURE',
+    'CREATE ANY TABLE',
+    'ALTER ANY TABLE',
+    'CREATE ANY VIEW'
+  )
+order by
+  rp.grantee,
+  rp.granted_role,
+  sp.privilege;
+
+-- enabled audit policies
+select
+  policy_name,
+  enabled_option,
+  entity_name,
+  entity_type,
+  success,
+  failure
+from
+  audit_unified_enabled_policies
+order by
+  policy_name;
+
+-- all audit policies
+select
+  policy_name,
+  audit_option,
+  object_schema,
+  object_name,
+  condition_eval_opt
+from
+  audit_unified_policies
+order by
+  policy_name,
+  object_schema,
+  object_name;

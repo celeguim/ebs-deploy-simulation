@@ -3,5 +3,14 @@
   "oracle.sql.developer.worksheets.autoConnect": true,
 
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
+  "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode",
+  "[oracle-sql]": {
+    "editor.defaultFormatter": "Oracle.sql-developer"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[sql]": {
+    "editor.defaultFormatter": "ReneSaarsoo.sql-formatter-vsc"
+  }
 }
