@@ -12,5 +12,6 @@
   },
   "[sql]": {
     "editor.defaultFormatter": "ReneSaarsoo.sql-formatter-vsc"
-  }
+  },
+  "sqldeveloper.connections.session.sharing": "off"
 }

@@ -51,3 +51,22 @@ WHERE
             ad_adop_sessions
     )
     AND status <> 'C';
+
+-- consultar erros de objetos invalidos
+SELECT
+    owner,
+    name,
+    type,
+    sequence,
+    line,
+    position,
+    text
+FROM
+    dba_errors
+WHERE
+    owner = 'APPS'
+    AND name IN ('XXDNVGL_GCC_SC_INT_PKG', 'XXDNV_ESS_RESP_PKG')
+ORDER BY
+    name,
+    type,
+    sequence;

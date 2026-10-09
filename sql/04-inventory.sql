@@ -24,9 +24,9 @@ select distinct owner
                       'APPQOSSYS',
                       'GSMADMIN_INTERNAL' )
    and owner not in (
-   select schema_name
+   select schema
      from dba_registry
-    where schema_name = owner
+    where schema = owner
 )
  order by owner;
 
